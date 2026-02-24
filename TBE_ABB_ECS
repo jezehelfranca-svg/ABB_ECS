@@ -1,0 +1,111 @@
+Technical Bid Evaluation: Absheron Ph2 CPF Electrical Control System (ECS)
+
+1. Executive Context and Offer Summary
+
+The Electrical Control System (ECS) is the strategic automation backbone of the Absheron Full Field Development Project. It serves as the critical intelligence layer managing the transition between the primary grid supply (110kV OHTL incomers) and the facility’s distribution network (11kV, 690V, and 400V). The ECS is tasked with maintaining grid stability through high-speed load shedding and automated source transfers, ensuring that power generation—including the Emergency Diesel Generators (EDG)—effectively supports operational continuity without total facility blackouts during transient faults.
+
+Strategic Commercial Status: It is imperative to note that the current ABB proposal is a Budgetary and Non-binding offer. As a preliminary estimate, the quoted price of USD 770,000 is subject to fluctuation based on final engineering refinements, material volatility, and scope definition. The purchaser should treat this as a basis for discussion rather than a firm contractual commitment.
+
+Feature	Details
+Project Name	Absheron Full Field Development (Phase 2)
+Proposed System	ABB ZEE600 SCADA & AC500 PLC Platform
+Quotation Number	20683340
+Offer Date	February 13, 2026
+Total Price	USD 770,000 (VAT Excluded)
+Delivery Lead Time	9 Months After Contract (Subject to Material Availability)
+Warranty	18 Months After Delivery / 12 Months After Acceptance
+
+The objective of this evaluation is to validate technical alignment with Specification GS EP ELE 221 and identify critical scope boundaries before proceeding to final vendor selection.
+
+2. Technical Architecture and Hardware Integrity
+
+Reliability in the Absheron CPF is predicated on a distributed, N+1 redundant architecture. This design strategy ensures that the failure of any single supervision or control component does not result in a loss of the automated sequences required to protect the 110kV/11kV grid.
+
+Hardware Specification and Operational Impact
+
+The hardware selection demonstrates industrial rigor, though its performance is strictly tied to specific project maintenance requirements.
+
+Proposed Specification	Operational Impact
+Redundant Intel Xeon Servers	Supports the Section 9.4 mandate for a 5-year data historian; includes mandatory alarm triggers when storage hits 80% capacity.
+i7 Workstations (OWS/EWS)	High-performance HMI rendering with mandatory automatic operator logout after 10 minutes of inactivity for security compliance.
+ABB AC500 Redundant PLCs	Utilizes EEPROM-based program memory (Section 11.2.6) to ensure rapid, autonomous recovery of control logic following total power loss.
+RSTP Topology	Redundant industrial Ethernet switches configured in a self-healing ring to maintain sub-second communication during fiber segment failures.
+
+Network Topology and Hardware Gap Analysis
+
+The communication backbone utilizes a TCP/IP Lan-1 architecture. While the internal ECS panel architecture is robust, a Hardware Gap Analysis based on "Note 1" and "Note 2" of the architecture drawings identifies significant exclusions that the EPC must account for:
+
+* External Cabling (Exclusion E1): All external control, communication, and fiber optic cabling—including the switchgear-to-switchgear fiber links—are excluded.
+* Fiber Infrastructure: Fiber patch panels and patch cords required to terminate field cables within the ECS cabinets are not in the ABB scope.
+* UPS Systems (Exclusion E8): While the ECS requires 230VAC/110VDC for its servers and PLCs (Section 4.3), the UPS units, batteries, and rectifiers are entirely excluded.
+* Switchgear Networks (Exclusion E4): The internal Ethernet switches and cabling within the 11kV/LV switchgear cubicles must be provided by the switchgear vendor.
+
+3. Functional Compliance: Mandatory Automation & Control
+
+The ECS must execute automated network reconfiguration within milliseconds to protect the CPF from cascading failures during source transfers or 110kV grid disturbances.
+
+Source Transfer Logic (FBTS/ATS/MTS)
+
+Per Section 7.6, the transfer logic utilizes a tiered control hierarchy:
+
+1. Local Mode: Manual transfer at the switchboard using a physical "Source Transfer Selector Switch" and a manual "Trip Selector Switch" to prevent inadvertent paralleling of incomers.
+2. Remote ECS Mode: Automation is active only when all breakers are in the "Remote" position.
+3. HMI Trip Selector: In remote mode, a software-based trip selector on the HMI determines which breaker (Incomer or Bus Tie) is tripped during manual transfers to ensure a "make-before-break" sequence.
+
+Quantitative Functional Assessment
+
+The proposed system must meet the following technical thresholds derived from Sections 8.3 and 8.8:
+
+* Neutral Earthing Management: The system manages earthing transformer priority ranks to prevent the HV grid from operating in pure IT mode. The changeover time between earthing transformers must be less than 2 seconds.
+* Reacceleration Logic: Natural reacceleration is triggered for very short voltage dips (t < 0.5s).
+* Restarting Logic: Staggered motor restarting sequences are initiated for interruptions ranging from 0.5s to 10 seconds. This prevents excessive inrush current on the restored source.
+* Load Shedding Speed: The system is engineered for a 200ms maximum response time from fault detection to the confirmation of circuit breaker opening.
+
+4. System Interoperability and Interface Analysis
+
+The ECS is a "P3 Package," meaning its operational efficacy depends on seamless integration with the Integrated Control and Safety System (ICSS) and third-party vendor packages.
+
+Interface Protocol Mapping
+
+Equipment Type	Protocol	Strategic Importance
+HV/LV Switchgear (IEDs)	IEC 61850 / Modbus TCP	Facilitates 1ms time-stamping for sub-cycle fault analysis.
+Enterprise Historian	ICSS Network / PI-to-PI	Provides off-site data mirroring to the PDS PI Server for asset management.
+Emergency Diesel (EDG)	Modbus & Hardwired	Critical for "Black Start" logic and auto-synchronization (Section 7.7).
+ICSS (PCS Layer)	Modbus TCP/IP	Mandatory 1.5s comms link / 1.0s hardwired response (Section 10.3).
+
+Interface Risk: Per Exclusion E4, the switchgear vendor is responsible for all internal switches and cabling. If the switchgear is not delivered with an IEC 61850 compliant internal network, the ECS will fail to meet the 1ms time-stamping requirement for fault recording.
+
+5. Project Services, Lifecycle, and Commercial Risk
+
+With a 25-year design life, the project’s sustainability depends on the vendor’s long-term commitment and the management of global supply chain risks.
+
+Scope of Services and Obsolescence
+
+* Engineering: Fully engineered and assembled in Turkey.
+* Support Guarantee: ABB offers a "5+5+15" year strategy (Section 10.7), ensuring components remain active for 5 years post-SAT, followed by 5 years of commercial notice and 15 years of guaranteed spare parts availability.
+* Site Services: 40 days of commissioning support across four mobilizations.
+
+Commercial Risk Profile
+
+The ABB General Terms and Conditions (GTC) present significant financial and schedule risks:
+
+* Termination for Convenience: Stringent fees apply (65% of price if terminated within 7 days; 100% after 1 month).
+* Excusable Event Clause (Section 26.1): ABB explicitly names "electronic components (semiconductors)" and "raw materials volatility" as excusable events. Given the current global climate, this represents a High Schedule Risk for the 9-month delivery window.
+
+6. Final Evaluation and Recommendations
+
+Technically, the ABB offer is robust and highly aligned with GS EP ELE 221. The AC500 platform provides the necessary N+1 redundancy and sub-second response times required for the Absheron Ph2 CPF. However, the "Budgetary" nature of the offer and specific scope exclusions require immediate attention.
+
+Critical Action Items for the EPC/Purchaser
+
+1. Fiber and Patching Scope: Confirm the vendor for inter-substation fiber optic cables and patch panels; these represent a significant "hidden" infrastructure cost excluded by ABB.
+2. I/O Mapping for 3rd Parties: Ensure HVAC, UPS, and EDG vendors provide Modbus/IEC 61850 mapping tables that align with ABB’s communication database.
+3. Internal Switchgear Network: Verify that HV/LV switchgear Purchase Orders include the internal Ethernet switches required to interface with the ECS.
+4. Material Escalation: Negotiate a price validity extension or a "cap" on raw material increases to mitigate the risks identified in the "Excusable Event" clause.
+5. Budget for FAT Attendance: Per Exclusion E14, the purchaser must separately budget for all airfare, travel, and lodging for the 5-day Factory Acceptance Test in Turkey.
+
+Technical Verdict
+
+Technically Compliant with Specific Scope Clarifications Required.
+
+The proposal provides a sophisticated foundation for the Absheron Ph2 CPF. If the noted scope gaps regarding external cabling and FAT logistics are closed, the system is well-positioned to meet its 25-year sustainability and operational safety targets.
